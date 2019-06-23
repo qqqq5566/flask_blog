@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+<title>404-php中文网</title>
+
+   <!--- basic page needs
+   ================================================== -->
+   <meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+   <!-- mobile specific metas
+   ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+ 	<!-- CSS
+   ================================================== -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/error/base.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/error/main.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/error/vendor.css')}} ">
+
+   <!-- script
+   ================================================== -->
+	<script src="{{ url_for('static', filename='js/error/modernizr.js') }}"></script>
+
+   <!-- favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon"/>
+</head>
+
+<body>
+
+	<!-- header
+   ================================================== -->
+   <header class="main-header">
+   	<div class="row">
+   		<div class="logo">
+	         <a href="/">首页</a>
+	      </div>
+   	</div>
+
+   	<a class="menu-toggle" href="#"><span>Menu</span></a>
+   </header> <!-- /header -->
+
+	<!-- main content
+   ================================================== -->
+   <main id="main-404-content" class="main-content-particle-js">
+
+   	<div class="content-wrap">
+
+		   <div class="shadow-overlay"></div>
+
+		   <div class="main-content">
+		   	<div class="row">
+		   		<div class="col-twelve">
+
+			  			<h1 class="kern-this">页面丢了</h1>
+			  			<p>
+						唉哟我去~出故障了！<br/>程序小哥没吃饭，努力抢修中
+			  			</p>
+
+			  			<div class="search">
+				      	<!--<form>-->
+								<!--<input readonly="" type="text" id="s" name="s" class="search-field" placeholder="Type and hit enter …">-->
+						<!--</form>-->
+				      </div>
+
+			   	</div> <!-- /twelve -->
+		   	</div> <!-- /row -->
+		   </div> <!-- /main-content -->
+		</div> <!-- /content-wrap -->
+
+   </main> <!-- /main-404-content -->
+
+   <div id="preloader">
+    	<div id="loader"></div>
+   </div>
+
+   <!-- Java Script
+   ================================================== -->
+   <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+   <script src="{{ url_for('static', filename='js/error/plugins.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/error/main.js') }}"></script>
+</body>
+</html>
