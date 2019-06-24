@@ -5,21 +5,23 @@
 # 开发工具 ： PyCharm Community Edition
 from app.home import home
 from app import db
-from flask import render_template, flash, url_for, request, current_app, send_from_directory, redirect
-from app.models import Article
+from flask import render_template, flash, url_for, request, current_app, send_from_directory, redirect, jsonify
 from flask_login import login_required, current_user
 from .forms import ArticleForm
 import os
 from flask_ckeditor import upload_fail, upload_success
 from datetime import datetime
 import random
-from app.models import Article, Category
+from app.models import Article, Category, Comment
 
 
 
 @home.route('/show/<int:id>')
 def show(id):
     article = Article.query.get_or_404(id)
+    if article:
+        article.view_num = int(article.view_num) + 1
+        db.session.commit()
     return render_template('/home/article/show.html',article=article)
 
 @home.route('/article', methods=['GET', 'POST'])
@@ -138,4 +140,64 @@ def gen_rnd_filename():
     """生产随机文件名称"""
     filename_prefix = datetime.now().strftime('%Y%m%d%H%M%S')
     return '%s%s' % (filename_prefix, str(random.randrange(1000, 10000)))
+
+
+@home.route('/comment/<int:articleId>', methods=['POST'])
+@login_required
+def comment(articleId):
+    content = request.form['commentContent']
+    if content:
+        comment = Comment(
+            user_id = current_user.get_id(),
+            article_id = articleId,
+            content = content
+        )
+        db.session.add(comment)
+        db.session.commit()
+        return jsonify(
+            {
+                'success':True,
+                'errorcode':200,
+                'msg':'保存成功',
+                'data':{
+                    'username':current_user.username,
+                    't': datetime.now()
+                }
+            }
+        )
+    else:
+        return jsonify(
+            {
+                'success': False,
+                'errorcode': 301,
+                'msg': '内容不能为空'
+            }
+        )
+
+@home.route('/comment_list/<int:articleId>', methods=['POST'])
+def comment_list(articleId):
+    if articleId:
+        commentList = Comment.query.filter_by(article_id=articleId).order_by(Comment.add_time.desc()).offset(0).limit(10)
+        commentDIct = {}
+        for comment in commentList:
+            commentDIct['username'] = comment.user.username
+            commentDIct['content'] = comment.content
+            commentDIct['t'] = comment.add_time
+        return jsonify(
+            {
+                'success':True,
+                'errorcode':200,
+                'msg':'保存成功',
+                'data':commentDIct
+            }
+        )
+    else:
+        return jsonify(
+            {
+                'success': False,
+                'errorcode': 301,
+                'msg': '没有文章编号参数'
+            }
+        )
+
 

@@ -196,12 +196,12 @@ $(window).scroll(function () {
 //})();
 
 /*禁止键盘操作*/
-document.onkeydown=function(event){
-	var e = event || window.event || arguments.callee.caller.arguments[0];
-	if((e.keyCode === 123) || (e.ctrlKey) || (e.ctrlKey) && (e.keyCode === 85)){
-		return false;
-	}
-}; 
+//document.onkeydown=function(event){
+//	var e = event || window.event || arguments.callee.caller.arguments[0];
+//	if((e.keyCode === 123) || (e.ctrlKey) || (e.ctrlKey) && (e.keyCode === 85)){
+//		return false;
+//	}
+//};
 
 /*文章评论*/
 $(function(){
@@ -221,25 +221,34 @@ $(function(){
 		promptText.text('正在提交...');
 		$.ajax({   
 			type:"POST",
-			url:"test.php?id=" + articleid,
+			url:"/comment/" + articleid,
 			//url:"/Article/comment/id/" + articleid,   
-			data:"commentContent=" + replace_em(commentContent.val()),   
+			data:{commentContent: commentContent.val()},
 			cache:false, //不缓存此页面  
 			success:function(data){
-				alert(data);
-				promptText.text('评论成功!');
-			    commentContent.val(null);
-				$(".commentlist").fadeIn(300);
-				/*$(".commentlist").append();*/
-				commentButton.attr('disabled',false);
-				commentButton.removeClass('disabled');
+			    
+			    if(data.success){
+
+                    promptText.text('评论成功!');
+                    $(".commentlist").fadeIn(300);
+                    /*$(".commentlist").append();*/
+                    commentButton.attr('disabled',false);
+                    commentButton.removeClass('disabled');
+                    srt = '<li class="comment-content"><span class="comment-f">#1</span>'+
+                        '<div class="comment-avatar"><img class="avatar" src="images/icon/icon.png" alt="" /></div>'+
+                        '<div class="comment-main"><p>来自<span class="address">'+data.data.username+'</span>的用户<span class="time">(2016-01-06)</span><br />'+
+                           commentContent.val()+'</p></div></li>'
+                    $(".commentlist").append(srt);
+                     commentContent.val(null);
+				}
 			}
 		});
-		/*$(".commentlist").append(replace_em(commentContent.val()));*/
 		promptBox.fadeOut(100);
 		return false;
 	});
 });
+
+
 //对文章内容进行替换
 function replace_em(str){
 	str = str.replace(/\</g,'&lt;');
